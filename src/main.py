@@ -36,7 +36,7 @@ def run_game():
     generate_computer_ships()
     while True:
 
-        DISPLAY.blit(BACKGROUND_IMAGE, (0, 0)) #Background sea image
+        DISPLAY.blit(BACKGROUND_IMAGE, (0, 0)) #Background sea image/Задник моря
         display_ships()
         display_tiles()
 
@@ -56,8 +56,8 @@ def run_game():
             display_text(410, 40, "Click to fire", YELLOW, 20)
 
             x, y = get_pos(highlight=True, topleft=True, board="Right")
-            if clicked: #Mouse is clicked
-                if x != False: #Mouse on computers grid
+            if clicked: #Mouse is clicked/Проверка нажатия мыши
+                if x != False: #Mouse on computers grid/Нахождение мыши на игровом поле
                     x_grid, y_grid = get_grid_ref(x, y, board="Right")
                     if computer_grid[y_grid][x_grid].uncovered == False:
                         users_shot = False
@@ -85,13 +85,13 @@ def run_game():
         check_if_end(shots_taken)
 
         for event in pygame.event.get():
-            if event.type == MOUSEBUTTONUP: # Left clicked
+            if event.type == MOUSEBUTTONUP: # Left clicked/Проверка на нажатие ЛКМ
 
                 x = event.pos[0]
                 y = event.pos[1]
 
-                if x > 50+450 and y > 65: #Top left grid corner
-                    if x < 450+450 and y < 465: #Bottom right grid corner
+                if x > 50+450 and y > 65: #Top left grid corner/евый верхний угол
+                    if x < 450+450 and y < 465: #Bottom right grid corner/Правый нижний угол
                         clicked = True
                         click_location = event.pos
             else:
@@ -112,19 +112,19 @@ def game_setup():
 
     while True:
 
-        DISPLAY.blit(BACKGROUND_IMAGE, (0, 0)) #Background sea image
-        draw_grid("Left", 3) #Displays user grid (left)
-        draw_axis("Horizontal", "Left") #Displays Horizontal axis on the left
-        draw_axis("Vertical", "Left") #Displays vertical axis on the left
-        display_text(520, 400, "SPACE - Rotate       LEFTCLICK - Place", WHITE) #Controls to place instructions
+        DISPLAY.blit(BACKGROUND_IMAGE, (0, 0)) #Background sea image/Задник моря
+        draw_grid("Left", 3) #Displays user grid (left)/Вывод поля
+        draw_axis("Horizontal", "Left") #Displays Horizontal axis on the left/Вывод горизонтальной левой стороны
+        draw_axis("Vertical", "Left") #Displays vertical axis on the left/Вывод вертикальной левой стороны
+        display_text(520, 400, "SPACE - Rotate       LEFTCLICK - Place", WHITE)
         display_ships()
 
-        ships_placed = len(user_ships) #How many ships have been placed so far
+        ships_placed = len(user_ships)
 
         display_text(483, 110, f"Place your {ship_lengths[ships_placed]} long ship!", WHITE, 40) # Instructions title
         x, y = get_pos(highlight=ship_allowable_position, topleft=True, length=ship_lengths[ships_placed], rotated=rotated) # Returns pos of topleft corner of grid square
 
-        if x is False: #If pointer not on grid
+        if x is False: #If pointer not on grid/Проверка есть ли корабль на поле
             ship_allowable_position = False
         elif y <= 465-ship_lengths[ships_placed]*40 and rotated == True or rotated == False and x <= 450-ship_lengths[ships_placed]*40: # Full ship on the grid
             ship_allowable_position = check_tile_in_use(x, y, rotated, ship_lengths[ships_placed]) # Tile doesn't have other ship on it
@@ -179,20 +179,20 @@ def game_setup():
                     ship_5 = Ships(x, y, rotated, 5, "5")
                     user_ships.append(ship_5)
                     add_tile_in_use(x, y, rotated, ship_lengths[ships_placed])
-                    return #All ships placed, head back to main game loop
+                    return #All ships placed, head back to main game loop/Все корабли расставлены и возврат к мейнциклу
             else:
                 display_image(640, 260, "images/ships/5.png", 200, 40)
 
 
-        # Checking events (Mouse/Keypresses)
+        # Checking events (Mouse/Keypresses)/Проверка на взаимодействие
         for event in pygame.event.get():
-            if event.type == MOUSEBUTTONUP: # Left clicked
+            if event.type == MOUSEBUTTONUP: # Left clicked/Проверка нажатия
 
                 x = event.pos[0]
                 y = event.pos[1]
 
-                if x > 50 and y > 65: #Top left grid corner
-                    if x < 450 and y < 465: #Bottom right grid corner
+                if x > 50 and y > 65: #Top left grid corner/Левый верхний угол
+                    if x < 450 and y < 465: #Bottom right grid corner/Правый нижний угол
                         clicked = True
                         click_location = event.pos
             else:
@@ -200,8 +200,8 @@ def game_setup():
 
 
             if event.type == KEYDOWN:
-                if event.key == 32: #spacebar
-                    rotated = not rotated #Swap boolean
+                if event.key == 32:
+                    rotated = not rotated
 
             elif event.type ==pygame.QUIT:
                 pygame.quit()
@@ -218,8 +218,7 @@ def blowup(x, y, time=5):
 
 def get_grid_ref(x, y, board="Left"):
     x_offset = 0
-    # if board == "Right":
-    #     x_offset = 450
+
     x_gr = math.floor((x-50-x_offset)/40)
     y_gr = math.floor((y-65)/40)
 
@@ -250,7 +249,7 @@ def check_if_end(shots_taken):
 
 def show_end_screen(winner:str, shots_taken):
     while True:
-        DISPLAY.blit(BACKGROUND_IMAGE, (0, 0)) #Background sea image
+        DISPLAY.blit(BACKGROUND_IMAGE, (0, 0)) #Background sea image/Задник моря
         display_text(160, 20, "GAME OVER", WHITE, 100)
         display_text(290, 360, f"In {math.floor(shots_taken/2)} shots", WHITE, 75)
 
@@ -265,7 +264,7 @@ def show_end_screen(winner:str, shots_taken):
 def generate_computer_ships():
 
     while True:
-        ships_placed = len(computer_ships) #How many ships have been placed so far
+        ships_placed = len(computer_ships) #How many ships have been placed so far/Сколько кораблей было поставлено на поле
         if ships_placed > 4:
                 return
         x = XMARGIN + 450 + random.randint(0, 9)*40
@@ -273,8 +272,8 @@ def generate_computer_ships():
         rotated = random.choice([True, False])
         length = ship_lengths[ships_placed]
 
-        if y <= 465-ship_lengths[ships_placed]*40 and rotated == True or rotated == False and x <= 450+450-ship_lengths[ships_placed]*40: # Full ship on the grid
-            ship_allowable_position = check_tile_in_use(x, y, rotated, length, user=False) # Tile doesn't have other ship on it
+        if y <= 465-ship_lengths[ships_placed]*40 and rotated == True or rotated == False and x <= 450+450-ship_lengths[ships_placed]*40: # Full ship on the grid/Попадание
+            ship_allowable_position = check_tile_in_use(x, y, rotated, length, user=False) # Tile doesn't have other ship on it/Пустая клетка
         else:
             ship_allowable_position = False
 
@@ -314,10 +313,10 @@ def check_tile_in_use(x, y, rotated, length, user=True):
             return False
 
         for i in range(length):
-            if rotated == False: #Ship is Horizontal
+            if rotated == False: #Ship is Horizontal/Горизонтальное расположение корабля
                 if f"{x+(40*i)},{y}" in occupied_tiles_list:
                     return False
-            elif rotated == True: #Ship is vertical
+            elif rotated == True: #Ship is vertical/Вертикальное расположение корабля
                 if f"{x},{y+(40*i)}" in occupied_tiles_list:
                     return False
 
@@ -325,7 +324,6 @@ def check_tile_in_use(x, y, rotated, length, user=True):
 
 
 def add_tile_in_use(x, y, rotated, length, user=True):
-   # user_occupied_tiles.append(f"{x},{y}")
     x_offset = 0
     if user == False:
         x_offset = 450
@@ -334,15 +332,14 @@ def add_tile_in_use(x, y, rotated, length, user=True):
 
     if user:
         for i in range(length):
-            if rotated == True: # Vertical
+            if rotated == True: # Vertical/Вертикаль
                 user_occupied_tiles.append(f"{x},{y+40*i}")
                 user_grid[y_grid+i][x_grid].contains_ship = True
-            else: # Horizontal
+            else: # Horizontal/Горизонталь
                 user_occupied_tiles.append(f"{x+40*i},{y}")
                 user_grid[y_grid][x_grid+i].contains_ship = True
     else:
         for i in range(length):
-            #(f"X:{x}({x_grid}), Y:{y}({y_grid}), Rotated:{rotated}, Len:{length}, User:{user}, i:{i}\n")
             if rotated == True: # Vertical
                 computer_occupied_tiles.append(f"{x},{y+40*i}")
                 computer_grid[y_grid+i][x_grid].contains_ship = True
@@ -373,7 +370,7 @@ def display_ships():
 
 
 def get_pos(highlight=True, topleft=False, length=1, rotated=False, board="Left"):
-    coords = pygame.mouse.get_pos() # Get mouse pointer location
+    coords = pygame.mouse.get_pos() # Get mouse pointer location/Поиск расположение курсора
     x = coords[0]
     y = coords[1]
     if board == "Right":
@@ -383,15 +380,14 @@ def get_pos(highlight=True, topleft=False, length=1, rotated=False, board="Left"
         x_offset = 0
         x_tiles_offset = 0
 
-    # Checks mouse location is on the gri
-    if x > 50+x_offset and y > 65: #Top left grid coords
-        if x < 450+x_offset and y < 465: #Bottom right grid coords
+    # Checks mouse location is on the grid/Проверка расположения курсора в игровом поле
+    if x > 50+x_offset and y > 65: #Top left grid coords/Координаты левого верхнего угла сетки
+        if x < 450+x_offset and y < 465: #Bottom right grid coords/Коородинаты правого нижнего угла сетки
 
-            # Converts pointer location to the grid square it is in
             x = math.floor((x-50-x_offset)/40)
             y = math.floor((y-65)/40)
 
-            # Draw the blue rectangle
+            # Draw the blue rectangle/Отрисовка синего прямоугольника
             if highlight == True:
                 highlight_tile(x+x_tiles_offset, y, length, rotated)
             #
@@ -399,23 +395,22 @@ def get_pos(highlight=True, topleft=False, length=1, rotated=False, board="Left"
                 tl_x, tl_y = get_topleft_pixel(x, y)
                 return tl_x, tl_y
             else:
-                return x, y #gridsquare
+                return x, y #gridsquare/Сетка
     return False, False
 
-# Finds the top left pixel from the grid square
+# Finds the top left pixel from the grid square/Поиск левого верхнего ула квадрата для начала сетки
 def get_topleft_pixel(x, y):
     x = 50 + x*40
     y = 65 + y*40
     return x, y
 
-# Display the blue highlighted rectangle
 def highlight_tile(x, y, length, rotated):
     if rotated == False:
         pygame.draw.rect(DISPLAY, BLUE, pygame.Rect(50+40*x, 65+40*y, 40*length, 40), 4)
     elif rotated == True:
         pygame.draw.rect(DISPLAY, BLUE, pygame.Rect(50+40*x, 65+40*y, 40, 40*length), 4)
 
-# Function to display text at a set location, size and colour
+# Function to display text at a set location, size and colour/Функция для вывода на экран текста в опредлённой позиции
 def display_text(x, y, text, colour, font_size=20):
     FONT = pygame.font.Font('freesansbold.ttf', font_size)
     TEXT = FONT.render(text, True, colour)
@@ -423,7 +418,7 @@ def display_text(x, y, text, colour, font_size=20):
     TEXT_RECTANGLE.topleft = (x, y)
     DISPLAY.blit(TEXT, TEXT_RECTANGLE)
 
-# Function to display an image at a set location/rotation
+# Function to display an image at a set location/rotation/Функция для вывода на экран изображения определённой точки
 def display_image(x, y, file, size_x=None, size_y=None, rotated=False):
     image = pygame.image.load(file)
     if size_x != None and size_y != None:
@@ -435,7 +430,7 @@ def display_image(x, y, file, size_x=None, size_y=None, rotated=False):
 # Draws axis labels
 def draw_axis(axis:str="Horizontal", position:str="Left"):
 
-    if axis == "Horizontal": #Horizontal computer axis labels
+    if axis == "Horizontal":
         if position == "Left":
             offset = 0
         elif position == "Right":
@@ -444,7 +439,7 @@ def draw_axis(axis:str="Horizontal", position:str="Left"):
         for i in range(10):
             display_text(offset+65+TILESIZE*i, 473, str(i), WHITE)
 
-    elif axis == "Vertical": #Vertical axis labels
+    elif axis == "Vertical":
         if position == "Left":
             x = 20
         elif position == "Middle":
@@ -476,29 +471,29 @@ def display_tiles():
             else:
                 pygame.draw.rect(DISPLAY, GRAY, pygame.Rect(50+40*y_axis, 65+40*x_axis, 40, 40))
 
-# Draws grid lines
+# Draws grid lines/Отрисовка линий поля
 def draw_grid(side:str="Left", thickness=1):
 
     if side == "Left":
-        for x in range(11): #Horizontal user gridlines
+        for x in range(11):
             pygame.draw.line(DISPLAY, DARKGRAY,
             (x*TILESIZE+XMARGIN, YMARGIN),
             (x*TILESIZE+XMARGIN, WINDOWHEIGHT - 35),
             thickness)
-        for x in range(11): #Vertical user gridlines
+        for x in range(11):
             pygame.draw.line(DISPLAY, DARKGRAY,
             (XMARGIN, x*TILESIZE+YMARGIN),
             (WINDOWHEIGHT - XMARGIN, x*TILESIZE+YMARGIN),
             thickness)
 
     elif side == "Right":
-        for x in range(11): #Horizontal computer gridlines
+        for x in range(11): #Horizontal computer gridlines/Горизонтальные линии поля
             pygame.draw.line(DISPLAY, DARKGRAY,
             (x*TILESIZE+XMARGIN+450, YMARGIN),
             (x*TILESIZE+XMARGIN+450, WINDOWHEIGHT - 35),
             thickness)
 
-        for x in range(11): #Vertical computer gridlines
+        for x in range(11): #Vertical computer gridlines/Вертикальные линии поля
             pygame.draw.line(DISPLAY, DARKGRAY,
             (XMARGIN+450, x*TILESIZE+YMARGIN),
             (WINDOWHEIGHT - XMARGIN+450, x*TILESIZE+YMARGIN),
@@ -525,7 +520,7 @@ def generate_grids():
 
 
 
-# Class for ship objects
+# Class for ship objects/Класс корабли
 class Ships:
     def __init__(self, x, y, rotated, length, image):
         self.x = x
@@ -534,7 +529,7 @@ class Ships:
         self.length = length
         self.image = image
 
-# Class for tile objects
+# Class for tile objects/Класс для текстовых объектов
 class Tiles:
     def __init__(self, x, y, user:bool):
         self.x = x
@@ -543,7 +538,7 @@ class Tiles:
         self.contains_ship = False
         self.uncovered = False
 
-#Starts game
+#Starts game/Запуск игры
 if __name__ == "__main__":
     main()
 
