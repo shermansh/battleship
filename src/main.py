@@ -503,7 +503,45 @@ def draw_grid(side:str="Left", thickness=1):
             (XMARGIN+450, x*TILESIZE+YMARGIN),
             (WINDOWHEIGHT - XMARGIN+450, x*TILESIZE+YMARGIN),
             thickness)
+def generate_grids():
+    user_grid = []
+    computer_grid = []
 
+    for y_axis in range(10):
+        user_grid.append([])
+        for x_axis in range(10):
+            tile = Tiles(x_axis + 1, y_axis + 1, user=True)
+            user_grid[y_axis].append(tile)
+    for y_axis in range(10):
+        computer_grid.append([])
+        for x_axis in range(10):
+            tile = Tiles(x_axis + 1, y_axis + 1, user=False)
+            computer_grid[y_axis].append(tile)
+
+    return user_grid, computer_grid
+
+
+
+
+
+
+# Class for ship objects
+class Ships:
+    def __init__(self, x, y, rotated, length, image):
+        self.x = x
+        self.y = y
+        self.rotated = rotated
+        self.length = length
+        self.image = image
+
+# Class for tile objects
+class Tiles:
+    def __init__(self, x, y, user:bool):
+        self.x = x
+        self.y = y
+        self.user = user
+        self.contains_ship = False
+        self.uncovered = False
 
 
 
