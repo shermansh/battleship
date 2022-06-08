@@ -302,5 +302,52 @@ def generate_computer_ships():
                 computer_ships.append(ship_5)
 
             add_tile_in_use(x, y, rotated, length, user=False)
+def check_tile_in_use(x, y, rotated, length, user=True):
+    if user == True:
+        occupied_tiles_list = user_occupied_tiles
+    else:
+        occupied_tiles_list = computer_occupied_tiles
+
+    if x != False and y != False:
+
+        if f"{x},{y}" in occupied_tiles_list:
+            return False
+
+        for i in range(length):
+            if rotated == False: #Ship is Horizontal
+                if f"{x+(40*i)},{y}" in occupied_tiles_list:
+                    return False
+            elif rotated == True: #Ship is vertical
+                if f"{x},{y+(40*i)}" in occupied_tiles_list:
+                    return False
+
+    return True
+
+
+def add_tile_in_use(x, y, rotated, length, user=True):
+   # user_occupied_tiles.append(f"{x},{y}")
+    x_offset = 0
+    if user == False:
+        x_offset = 450
+    x_grid = math.floor((x-50-x_offset)/40)
+    y_grid = math.floor((y-65)/40)
+
+    if user:
+        for i in range(length):
+            if rotated == True: # Vertical
+                user_occupied_tiles.append(f"{x},{y+40*i}")
+                user_grid[y_grid+i][x_grid].contains_ship = True
+            else: # Horizontal
+                user_occupied_tiles.append(f"{x+40*i},{y}")
+                user_grid[y_grid][x_grid+i].contains_ship = True
+    else:
+        for i in range(length):
+            #(f"X:{x}({x_grid}), Y:{y}({y_grid}), Rotated:{rotated}, Len:{length}, User:{user}, i:{i}\n")
+            if rotated == True: # Vertical
+                computer_occupied_tiles.append(f"{x},{y+40*i}")
+                computer_grid[y_grid+i][x_grid].contains_ship = True
+            else: # Horizontal
+                computer_occupied_tiles.append(f"{x+40*i},{y}")
+                computer_grid[y_grid][x_grid+i].contains_ship = True
 
 
