@@ -394,5 +394,64 @@ def get_pos(highlight=True, topleft=False, length=1, rotated=False, board="Left"
             # Draw the blue rectangle
             if highlight == True:
                 highlight_tile(x+x_tiles_offset, y, length, rotated)
+            #
+            if topleft == True:
+                tl_x, tl_y = get_topleft_pixel(x, y)
+                return tl_x, tl_y
+            else:
+                return x, y #gridsquare
+    return False, False
+
+# Finds the top left pixel from the grid square
+def get_topleft_pixel(x, y):
+    x = 50 + x*40
+    y = 65 + y*40
+    return x, y
+
+# Display the blue highlighted rectangle
+def highlight_tile(x, y, length, rotated):
+    if rotated == False:
+        pygame.draw.rect(DISPLAY, BLUE, pygame.Rect(50+40*x, 65+40*y, 40*length, 40), 4)
+    elif rotated == True:
+        pygame.draw.rect(DISPLAY, BLUE, pygame.Rect(50+40*x, 65+40*y, 40, 40*length), 4)
+
+# Function to display text at a set location, size and colour
+def display_text(x, y, text, colour, font_size=20):
+    FONT = pygame.font.Font('freesansbold.ttf', font_size)
+    TEXT = FONT.render(text, True, colour)
+    TEXT_RECTANGLE = TEXT.get_rect()
+    TEXT_RECTANGLE.topleft = (x, y)
+    DISPLAY.blit(TEXT, TEXT_RECTANGLE)
+
+# Function to display an image at a set location/rotation
+def display_image(x, y, file, size_x=None, size_y=None, rotated=False):
+    image = pygame.image.load(file)
+    if size_x != None and size_y != None:
+        image = pygame.transform.smoothscale(image, (size_x, size_y))
+    if rotated == True:
+        image = pygame.transform.rotate(image, -90)
+    DISPLAY.blit(image, (x, y))
+
+# Draws axis labels
+def draw_axis(axis:str="Horizontal", position:str="Left"):
+
+    if axis == "Horizontal": #Horizontal computer axis labels
+        if position == "Left":
+            offset = 0
+        elif position == "Right":
+            offset = 450
+
+        for i in range(10):
+            display_text(offset+65+TILESIZE*i, 473, str(i), WHITE)
+
+    elif axis == "Vertical": #Vertical axis labels
+        if position == "Left":
+            x = 20
+        elif position == "Middle":
+            x = 468
+
+        for i in range(10):
+            display_text(x, 79+TILESIZE*i, alphabet[i], WHITE)
+
 
 
