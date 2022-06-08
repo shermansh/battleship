@@ -36,7 +36,7 @@ def run_game():
     generate_computer_ships()
     while True:
 
-        DISPLAY.blit(BACKGROUND_IMAGE, (0, 0)) #Background sea image/Задник моря
+        DISPLAY.blit(BACKGROUND_IMAGE, (0, 0)) #Background sea image/Задник моря.
         display_ships()
         display_tiles()
 
