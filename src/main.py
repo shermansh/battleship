@@ -452,6 +452,58 @@ def draw_axis(axis:str="Horizontal", position:str="Left"):
 
         for i in range(10):
             display_text(x, 79+TILESIZE*i, alphabet[i], WHITE)
+def display_tiles():
+
+    for y_axis in range(10):
+        for x_axis in range(10):
+            tile = computer_grid[x_axis][y_axis]
+            if tile.uncovered == True:
+                if tile.contains_ship == True:
+                    pygame.draw.rect(DISPLAY, RED, pygame.Rect(450+50+40*y_axis, 65+40*x_axis, 40, 40))
+                else:
+                    pass
+            else:
+                pygame.draw.rect(DISPLAY, GRAY, pygame.Rect(450+50+40*y_axis, 65+40*x_axis, 40, 40))
+
+    for y_axis in range(10):
+        for x_axis in range(10):
+            tile = user_grid[x_axis][y_axis]
+            if tile.uncovered == True:
+                if tile.contains_ship == True:
+                    pygame.draw.rect(DISPLAY, RED, pygame.Rect(50+40*y_axis, 65+40*x_axis, 40, 40))
+                else:
+                    pass
+            else:
+                pygame.draw.rect(DISPLAY, GRAY, pygame.Rect(50+40*y_axis, 65+40*x_axis, 40, 40))
+
+# Draws grid lines
+def draw_grid(side:str="Left", thickness=1):
+
+    if side == "Left":
+        for x in range(11): #Horizontal user gridlines
+            pygame.draw.line(DISPLAY, DARKGRAY,
+            (x*TILESIZE+XMARGIN, YMARGIN),
+            (x*TILESIZE+XMARGIN, WINDOWHEIGHT - 35),
+            thickness)
+        for x in range(11): #Vertical user gridlines
+            pygame.draw.line(DISPLAY, DARKGRAY,
+            (XMARGIN, x*TILESIZE+YMARGIN),
+            (WINDOWHEIGHT - XMARGIN, x*TILESIZE+YMARGIN),
+            thickness)
+
+    elif side == "Right":
+        for x in range(11): #Horizontal computer gridlines
+            pygame.draw.line(DISPLAY, DARKGRAY,
+            (x*TILESIZE+XMARGIN+450, YMARGIN),
+            (x*TILESIZE+XMARGIN+450, WINDOWHEIGHT - 35),
+            thickness)
+
+        for x in range(11): #Vertical computer gridlines
+            pygame.draw.line(DISPLAY, DARKGRAY,
+            (XMARGIN+450, x*TILESIZE+YMARGIN),
+            (WINDOWHEIGHT - XMARGIN+450, x*TILESIZE+YMARGIN),
+            thickness)
+
 
 
 
