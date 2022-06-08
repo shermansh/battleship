@@ -349,5 +349,50 @@ def add_tile_in_use(x, y, rotated, length, user=True):
             else: # Horizontal
                 computer_occupied_tiles.append(f"{x+40*i},{y}")
                 computer_grid[y_grid][x_grid+i].contains_ship = True
+def display_ships():
+    if user_ships:
+        for i in user_ships:
+            if i.rotated == True:
+                width = 40
+                height = i.length*40
+            else:
+                width = i.length*40
+                height = 40
+
+            display_image(i.x, i.y, f"images/ships/{i.image}.png", 40*i.length, 40, i.rotated)
+    if computer_ships:
+        for i in computer_ships:
+            if i.rotated == True:
+                width = 40
+                height = i.length*40
+            else:
+                width = i.length*40
+                height = 40
+
+            display_image(i.x, i.y, f"images/ships/{i.image}.png", 40*i.length, 40, i.rotated)
+
+
+def get_pos(highlight=True, topleft=False, length=1, rotated=False, board="Left"):
+    coords = pygame.mouse.get_pos() # Get mouse pointer location
+    x = coords[0]
+    y = coords[1]
+    if board == "Right":
+        x_offset = 450
+        x_tiles_offset = 11.25
+    else:
+        x_offset = 0
+        x_tiles_offset = 0
+
+    # Checks mouse location is on the gri
+    if x > 50+x_offset and y > 65: #Top left grid coords
+        if x < 450+x_offset and y < 465: #Bottom right grid coords
+
+            # Converts pointer location to the grid square it is in
+            x = math.floor((x-50-x_offset)/40)
+            y = math.floor((y-65)/40)
+
+            # Draw the blue rectangle
+            if highlight == True:
+                highlight_tile(x+x_tiles_offset, y, length, rotated)
 
 
