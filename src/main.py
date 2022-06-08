@@ -209,3 +209,57 @@ def game_setup():
 
         pygame.display.update()
         FPS_CLOCK.tick(FPS)
+def blowup(x, y, time=5):
+    for i in range(5):
+        display_image(x, y, f"images/explosion/blowup{i+1}.png", size_x=40, size_y=40, rotated=False)
+        pygame.display.flip()
+        FPS_CLOCK.tick(5)
+
+
+def get_grid_ref(x, y, board="Left"):
+    x_offset = 0
+    # if board == "Right":
+    #     x_offset = 450
+    x_gr = math.floor((x-50-x_offset)/40)
+    y_gr = math.floor((y-65)/40)
+
+    return x_gr, y_gr
+
+
+def check_if_end(shots_taken):
+    user_won = True
+    for y_axis in range(10):
+        for x_axis in range(10):
+            tile = computer_grid[x_axis][y_axis]
+            if tile.contains_ship == True:
+                if tile.uncovered == False:
+                    user_won = False
+    if user_won == True:
+        show_end_screen("User", shots_taken)
+
+    computer_won = True
+    for y_axis in range(10):
+        for x_axis in range(10):
+            tile = user_grid[x_axis][y_axis]
+            if tile.contains_ship == True:
+                if tile.uncovered == False:
+                    computer_won = False
+    if computer_won == True:
+        show_end_screen("Computer", shots_taken)
+
+
+def show_end_screen(winner:str, shots_taken):
+    while True:
+        DISPLAY.blit(BACKGROUND_IMAGE, (0, 0)) #Background sea image
+        display_text(160, 20, "GAME OVER", WHITE, 100)
+        display_text(290, 360, f"In {math.floor(shots_taken/2)} shots", WHITE, 75)
+
+        if winner == "User":
+            display_text(315, 200, "You won!", GREEN, 75)
+
+        elif winner == "Computer":
+            display_text(310, 200, "You lost!", RED, 75)
+
+        pygame.display.update()
+        FPS_CLOCK.tick(FPS)
+
