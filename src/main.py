@@ -262,4 +262,45 @@ def show_end_screen(winner:str, shots_taken):
 
         pygame.display.update()
         FPS_CLOCK.tick(FPS)
+def generate_computer_ships():
+
+    while True:
+        ships_placed = len(computer_ships) #How many ships have been placed so far
+        if ships_placed > 4:
+                return
+        x = XMARGIN + 450 + random.randint(0, 9)*40
+        y = YMARGIN + random.randint(0, 9)*40
+        rotated = random.choice([True, False])
+        length = ship_lengths[ships_placed]
+
+        if y <= 465-ship_lengths[ships_placed]*40 and rotated == True or rotated == False and x <= 450+450-ship_lengths[ships_placed]*40: # Full ship on the grid
+            ship_allowable_position = check_tile_in_use(x, y, rotated, length, user=False) # Tile doesn't have other ship on it
+        else:
+            ship_allowable_position = False
+
+
+
+        if ship_allowable_position:
+            if ships_placed == 0:
+                ship_2 = Ships(x, y, rotated, length, "2")
+                computer_ships.append(ship_2)
+
+            elif ships_placed == 1:
+                ship_3 = Ships(x, y, rotated, length, "3")
+                computer_ships.append(ship_3)
+
+            elif ships_placed == 2:
+                ship_3a = Ships(x, y, rotated, length, "3a")
+                computer_ships.append(ship_3a)
+
+            elif ships_placed == 3:
+                ship_4 = Ships(x, y, rotated, length, "4")
+                computer_ships.append(ship_4)
+
+            elif ships_placed == 4:
+                ship_5 = Ships(x, y, rotated, length, "5")
+                computer_ships.append(ship_5)
+
+            add_tile_in_use(x, y, rotated, length, user=False)
+
 
