@@ -543,5 +543,7 @@ class Tiles:
         self.contains_ship = False
         self.uncovered = False
 
-
+#Starts game
+if __name__ == "__main__":
+    main()
 
