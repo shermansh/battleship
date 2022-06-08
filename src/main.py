@@ -104,3 +104,108 @@ def run_game():
 
         pygame.display.update()
         FPS_CLOCK.tick(FPS)
+def game_setup():
+    rotated = False
+    ship_allowable_position = False
+    clicked = False
+   # user_ships = []
+
+    while True:
+
+        DISPLAY.blit(BACKGROUND_IMAGE, (0, 0)) #Background sea image
+        draw_grid("Left", 3) #Displays user grid (left)
+        draw_axis("Horizontal", "Left") #Displays Horizontal axis on the left
+        draw_axis("Vertical", "Left") #Displays vertical axis on the left
+        display_text(520, 400, "SPACE - Rotate       LEFTCLICK - Place", WHITE) #Controls to place instructions
+        display_ships()
+
+        ships_placed = len(user_ships) #How many ships have been placed so far
+
+        display_text(483, 110, f"Place your {ship_lengths[ships_placed]} long ship!", WHITE, 40) # Instructions title
+        x, y = get_pos(highlight=ship_allowable_position, topleft=True, length=ship_lengths[ships_placed], rotated=rotated) # Returns pos of topleft corner of grid square
+
+        if x is False: #If pointer not on grid
+            ship_allowable_position = False
+        elif y <= 465-ship_lengths[ships_placed]*40 and rotated == True or rotated == False and x <= 450-ship_lengths[ships_placed]*40: # Full ship on the grid
+            ship_allowable_position = check_tile_in_use(x, y, rotated, ship_lengths[ships_placed]) # Tile doesn't have other ship on it
+        else:
+            ship_allowable_position = False
+
+
+        if ships_placed == 0:
+            if ship_allowable_position == True:
+                display_image(x, y, "images/ships/2.png", 80, 40, rotated)
+                if clicked == True:
+                    ship_2 = Ships(x, y, rotated, 2, "2")
+                    user_ships.append(ship_2)
+                    add_tile_in_use(x, y, rotated, ship_lengths[ships_placed])
+            else:
+                display_image(660, 260, "images/ships/2.png", 80, 40)
+
+        elif ships_placed == 1:
+            if ship_allowable_position == True:
+                display_image(x, y, "images/ships/3.png", 120, 40, rotated)
+                if clicked == True:
+                    ship_3 = Ships(x, y, rotated, 3, "3")
+                    user_ships.append(ship_3)
+                    add_tile_in_use(x, y, rotated, ship_lengths[ships_placed])
+            else:
+                display_image(640, 260, "images/ships/3.png", 120, 40)
+
+        elif ships_placed == 2:
+            if ship_allowable_position == True:
+                display_image(x, y, "images/ships/3a.png", 120, 40, rotated)
+                if clicked == True:
+                    ship_3a = Ships(x, y, rotated, 3, "3a")
+                    user_ships.append(ship_3a)
+                    add_tile_in_use(x, y, rotated, ship_lengths[ships_placed])
+            else:
+                display_image(640, 260, "images/ships/3a.png", 120, 40)
+
+        elif ships_placed == 3:
+            if ship_allowable_position == True:
+                display_image(x, y, "images/ships/4.png", 160, 40, rotated)
+                if clicked == True:
+                    ship_4 = Ships(x, y, rotated, 4, "4")
+                    user_ships.append(ship_4)
+                    add_tile_in_use(x, y, rotated, ship_lengths[ships_placed])
+            else:
+                display_image(640, 260, "images/ships/4.png", 160, 40)
+
+        elif ships_placed == 4:
+            if ship_allowable_position == True:
+                display_image(x, y, "images/ships/5.png", 200, 40, rotated)
+                if clicked == True:
+                    ship_5 = Ships(x, y, rotated, 5, "5")
+                    user_ships.append(ship_5)
+                    add_tile_in_use(x, y, rotated, ship_lengths[ships_placed])
+                    return #All ships placed, head back to main game loop
+            else:
+                display_image(640, 260, "images/ships/5.png", 200, 40)
+
+
+        # Checking events (Mouse/Keypresses)
+        for event in pygame.event.get():
+            if event.type == MOUSEBUTTONUP: # Left clicked
+
+                x = event.pos[0]
+                y = event.pos[1]
+
+                if x > 50 and y > 65: #Top left grid corner
+                    if x < 450 and y < 465: #Bottom right grid corner
+                        clicked = True
+                        click_location = event.pos
+            else:
+                clicked = False
+
+
+            if event.type == KEYDOWN:
+                if event.key == 32: #spacebar
+                    rotated = not rotated #Swap boolean
+
+            elif event.type ==pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        pygame.display.update()
+        FPS_CLOCK.tick(FPS)
